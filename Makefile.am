@@ -34,14 +34,15 @@ LD_HARDEN_FLAGS=-Wl,-z,defs -Wl,-z,now
 opx_nas_daemon_SOURCES=src/main.c src/hald_init.c
 
 opx_nas_daemon_LDADD= -lopx_logging -lopx_cps_api_common \
-                        -lpthread -lsystemd  -lopx_nas_ndi \
+                        -lpthread -lsystemd -lopx_nas_ndi \
                         -lopx_nas_common -lopx_nas_interface \
                         -lopx_hal_routing -lopx_nas_l2 -lopx_nas_qos \
+			-lopx_nas_multicast \
                         -lopx_nas_packet_io -lopx_nas_linux -lopx_nas_acl
 
-opx_nas_daemon_CPPFLAGS= -I$(top_srcdir)/inc/opx -I$(includedir)/opx $(COMMON_HARDEN_FLAGS)
-opx_nas_daemon_CFLAGS= $(C_HARDEN_FLAGS)
-opx_nas_daemon_LDFLAGS= $(LD_HARDEN_FLAGS)
+opx_nas_daemon_CPPFLAGS=-I$(top_srcdir)/inc/opx -I$(includedir)/opx -I$(includedir)/ngos $(COMMON_HARDEN_FLAGS)
+opx_nas_daemon_CFLAGS=$(C_HARDEN_FLAGS)
+opx_nas_daemon_LDFLAGS=-L/usr/lib/x86_64-linux-gnu -lopx_nas_ndi $(LD_HARDEN_FLAGS)
 
 systemdconfdir=/lib/systemd/system
 systemdconf_DATA = cfg/*.service
